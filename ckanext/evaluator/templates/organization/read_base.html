@@ -1,0 +1,9 @@
+{% ckan_extends %}
+
+{% block content_primary_nav %}
+  {{ super() }}
+
+  {# Adding a new tab for sites evaluation info #}
+  {{ h.build_nav_icon('organization_evaluation', _('Evaluation'), id=c.group_dict.name) }}
+
+{% endblock %}

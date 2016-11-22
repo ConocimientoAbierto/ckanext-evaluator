@@ -5,9 +5,21 @@
 {% block primary_content_inner %}
   <h1>{% block page_heading %}Evaluación del sitio: {{ c.pkg_dict.display_name }}{% endblock %}</h1>
 
-  <div class="well">
-    <h3 class="text-center text-info">Aquí estará la evaluación del dataset</h3>
+  <div class="row well">
+    <div class="span7">
+      <h3 class="text-info">Evaluación de archivo (Good Tables)</h3>
+      <input type="hidden" value="{{ c.pkg_dict.resources[0].url }}" id="dataset_url" />
+    </div>
+    <div class="span1">
+      <h3 class="text-info"><a href="http://goodtables.okfnlabs.org/reports?data_url={{ c.pkg_dict.resources[0].url }}">n/c</a></h3>
+    </div>
   </div>
 
+  <div class="row well">
+    <div class="span7">
+      <h3 class="text-info">Evaluación de metadatos</h3>
+    </div>
+  </div>
 
+  {% resource 'evaluator/evaluator.js' %}
 {% endblock %}

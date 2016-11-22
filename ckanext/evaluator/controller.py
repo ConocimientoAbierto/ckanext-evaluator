@@ -10,10 +10,6 @@ class EvaluatorController(GroupController):
     def evaluation(self, id):
 
         try:
-            # toolkit.c.group_dict = toolkit.get_action('organization_show')(
-            #     None, {'id': id}
-            # )
-
             ## Get data from DB
             self.group_type = 'organization'
             context = {'model': model, 'session': model.Session,
@@ -31,3 +27,24 @@ class EvaluatorController(GroupController):
             abort(401, 'Esto es un 401 desde mi controller')
 
         return render('organization/evaluation.html')
+
+
+    def dataset_evaluation(self, id):
+
+        try:
+            ## Get data from DB
+            context = {'model': model, 'session': model.Session,
+                       'user': c.user or c.author,
+                       'for_view': True, 'extras_as_string': True,
+                       'auth_user_obj': c.userobj}
+            data_dict = {'id': id}
+
+            c.pkg_dict = logic.get_action('package_show')(context, data_dict)
+            c.pkg = context['package']
+        except logic.NotFound:
+            # abort(404, _('Resource not found'))
+            abort(404, 'Esto es un 404 desde mi controller')
+        except logic.NotAuthorized:
+            abort(401, 'Esto es un 401 desde mi controller')
+
+        return render('dataset/evaluation.html')

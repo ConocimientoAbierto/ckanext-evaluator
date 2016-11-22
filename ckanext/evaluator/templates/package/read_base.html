@@ -1,0 +1,9 @@
+{% ckan_extends %}
+
+{% block content_primary_nav %}
+  {{ super() }}
+
+  {# Adding a new tab for dataset evaluation info #}
+  {{ h.build_nav_icon('dataset_evaluation', _('Evaluation'), id=c.pkg_dict.name) }}
+
+{% endblock %}

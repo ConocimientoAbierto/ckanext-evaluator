@@ -1,0 +1,13 @@
+{% extends "package/read_base.html" %}
+
+{% block subtitle %}{{ _('Evaluation') }} - {{ super() }}{% endblock %}
+
+{% block primary_content_inner %}
+  <h1>{% block page_heading %}Evaluación del sitio: {{ c.pkg_dict.display_name }}{% endblock %}</h1>
+
+  <div class="well">
+    <h3 class="text-center text-info">Aquí estará la evaluación del dataset</h3>
+  </div>
+
+
+{% endblock %}

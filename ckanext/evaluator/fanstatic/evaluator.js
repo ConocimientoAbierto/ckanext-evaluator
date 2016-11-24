@@ -1,12 +1,21 @@
 "use strict";
 
+/* evaluator
+ *
+ * This JavaScript module makes a call to goodtables's API for the file's
+ * evaluation and create a table with the results
+ *
+ */
+
 ckan.module('evaluator_goodtables', function ($, _) {
   return {
     initialize: function () {
+      // getting and constructing urls
       const datasetUrl = $("#dataset_url").val()
       const goodTableUrl = 'http://goodtables.okfnlabs.org/api/run?data_url=' + datasetUrl;
       const linkToGT = "<a class='muted' href='http://goodtables.okfnlabs.org/reports?data_url="+datasetUrl+"' target='_blank'>ver en Good Tables </a>";
 
+      // calling GoddTables's API
       $.get(goodTableUrl)
         .done((data) => {
           let gt_status = $("#gt_status");
@@ -23,6 +32,9 @@ ckan.module('evaluator_goodtables', function ($, _) {
           $("#resultsTable").append(linkToGT);
         });
 
+      /**
+       * Function to creat and adding a table to the DOM with the results of GT
+       */
       let createGoodTableResults = (results) => {
         let resultsTable = $("#resultsTable");
         let table = "<table id='errorTable' class='table table-condensed table-hover'><thead><tr><th>fila</th><th>nombre</th><th>descripción</th></tr></thead><tbody></tbody></table>";
@@ -42,8 +54,6 @@ ckan.module('evaluator_goodtables', function ($, _) {
             errorTable.append(row);
           }
         }
-
-
 
       }
     }

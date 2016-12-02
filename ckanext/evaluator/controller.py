@@ -97,7 +97,7 @@ class EvaluatorController(GroupController):
         autor = pkg_dict['author']
         autor_mail = pkg_dict['author_email']
         email_regex = re.compile(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)")
-        if res or author:
+        if res or autor:
             reporte['responsable']['puntaje'] = 0.5
             reporte['responsable']['motivo'] = 'Autor y/o responsable identificados con nombre pero sin mail valido'
             if res and email_regex.match(res_mail) or autor and email_regex.match(autor_mail):

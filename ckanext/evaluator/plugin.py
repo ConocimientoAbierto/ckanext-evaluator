@@ -18,7 +18,7 @@ class EvaluatorPlugin(plugins.SingletonPlugin):
                 controller='ckanext.evaluator.controller:EvaluatorController') as m:
            m.connect('organization_evaluation', '/organization/evaluation/{id}', action='evaluation', ckan_icon='bar-chart')
 
-           m.connect('dataset_evaluation', '/dataset/evaluation/{id}', action='dataset_evaluation', ckan_icon='bar-chart')
+           m.connect('dataset_evaluation', '/dataset/evaluation/{id}', action='dataset_evaluation_view', ckan_icon='bar-chart')
 
         return route_map
 

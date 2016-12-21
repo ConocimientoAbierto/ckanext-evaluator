@@ -30,7 +30,24 @@ class EvaluatorController(GroupController):
 
         return render('organization/evaluation.html')
 
+    def dataset_evaluation_view(self, id):
+        ''' Render dataset evaluation view with the evaluation data
+
+        dataset_evaluation_view(id) -> render the view
+
+        render the view of evaluation result
+        '''
+        extra_vars = self.dataset_evaluation(id)
+        return render('dataset/evaluation.html', extra_vars=extra_vars)
+
     def dataset_evaluation(self, id):
+        ''' Return a dictionary with the report of a dataset
+
+            dataset_evaluation(id) -> {report}
+
+            Search for the information of a dataset through his id
+            and return a dictionary with the result of the evaluation
+        '''
 
         try:
             # Get data from DB
@@ -48,8 +65,8 @@ class EvaluatorController(GroupController):
         except logic.NotAuthorized:
             abort(401, 'Esto es un 401 desde mi controller')
 
-        extra_vars = {'reporte': self._matadata_evaluation(c.pkg_dict)}
-        return render('dataset/evaluation.html', extra_vars=extra_vars)
+        return {'reporte': self._matadata_evaluation(c.pkg_dict)}
+
 
     def _matadata_evaluation(self, pkg_dict):
 

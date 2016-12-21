@@ -2,10 +2,9 @@ import re, datetime
 from ckan.lib.base import render, c, abort
 from ckan.controllers.group import GroupController
 from ckan import model, logic
-import ckan.plugins as plugins
-# import ckan.plugins.toolkit.c as c
 
 dt = datetime.datetime
+
 
 # class EvaluatorController(base.BaseController):
 class EvaluatorController(GroupController):
@@ -13,7 +12,7 @@ class EvaluatorController(GroupController):
     def evaluation(self, id):
 
         try:
-            ## Get data from DB
+            # Get data from DB
             self.group_type = 'organization'
             context = {'model': model, 'session': model.Session,
                        'user': c.user or c.author,
@@ -31,11 +30,10 @@ class EvaluatorController(GroupController):
 
         return render('organization/evaluation.html')
 
-
     def dataset_evaluation(self, id):
 
         try:
-            ## Get data from DB
+            # Get data from DB
             context = {'model': model, 'session': model.Session,
                        'user': c.user or c.author,
                        'for_view': True, 'extras_as_string': True,
@@ -52,7 +50,6 @@ class EvaluatorController(GroupController):
 
         extra_vars = {'reporte': self._matadata_evaluation(c.pkg_dict)}
         return render('dataset/evaluation.html', extra_vars=extra_vars)
-
 
     def _matadata_evaluation(self, pkg_dict):
 
@@ -91,7 +88,7 @@ class EvaluatorController(GroupController):
             reporte['explicacion']['puntaje'] = 1
             reporte['explicacion']['motivo'] = 'Posee una descripcion y/o explicacion'
 
-        #responsable
+        # responsable
         res = pkg_dict['maintainer']
         res_mail = pkg_dict['maintainer_email']
         autor = pkg_dict['author']
@@ -122,7 +119,7 @@ class EvaluatorController(GroupController):
                 time_diff = now - last_modified
                 days_diff = time_diff.days
 
-                if days < 15:
+                if days_diff < 15:
                     reporte['frec_act_efectiva']['puntaje'] = 1
                     reporte['frec_act_efectiva']['motivo'] = 'La frecuencia de actualizacion es menor o igual a 15 dias'
                 else:
@@ -138,6 +135,5 @@ class EvaluatorController(GroupController):
             if resource['format'].lower() in formatos_abiertos:
                 reporte['formato']['puntaje'] = 1
                 reporte['formato']['motivo'] = 'El formato de cada archivo facilita su reutilizacion.'
-
 
         return reporte

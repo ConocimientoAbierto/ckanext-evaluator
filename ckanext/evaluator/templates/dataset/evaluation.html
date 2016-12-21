@@ -1,5 +1,7 @@
 {% extends "package/read_base.html" %}
 
+{% set categorias=reporte.categorias %}
+
 {% block subtitle %}{{ _('Evaluation') }} - {{ super() }}{% endblock %}
 
 {% block primary_content_inner %}
@@ -18,8 +20,11 @@
   </div>
 
   <div class="row well">
-    <div class="span8">
+    <div class="span6">
       <h3 class="text-info">Evaluación de metadatos</h3>
+    </div>
+    <div class="span2">
+      <h3 class="text-right">{{ reporte.total }}</h3>
     </div>
     <div class="span8">
       <table class="table table-hover table-condensed">
@@ -31,11 +36,11 @@
           </tr>
         </thead>
         <tbody>
-          {% for row in reporte %}
+          {% for row in categorias %}
             <tr>
-              <td>{{ reporte[row].descripcion }}</td>
-              <td>{{ reporte[row].motivo }}</td>
-              <td>{{ reporte[row].puntaje }}</td>
+              <td>{{ categorias[row].descripcion }}</td>
+              <td>{{ categorias[row].motivo }}</td>
+              <td>{{ categorias[row].puntaje }}</td>
             </tr>
           {% endfor %}
         </tbody>

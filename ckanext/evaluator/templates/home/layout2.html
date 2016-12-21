@@ -1,0 +1,35 @@
+<div role="main" class="hero">
+  <div class="container">
+    <div class="row row1">
+      <div class="span6 col1">
+        {% block search %}
+          {% snippet 'home/snippets/search.html' %}
+        {% endblock %}
+        {% block stats %}
+          {% snippet 'home/snippets/stats.html' %}
+        {% endblock %}
+      </div>
+      <div class="span6 col2">
+        {% block promoted %}
+          {% snippet 'home/snippets/promoted.html' %}
+        {% endblock %}
+      </div>
+    </div>
+  </div>
+</div>
+<div role="main">
+  <div class="container">
+    <div class="row row2">
+        {% block featured_organization %}
+            {% set organizations = h.get_featured_organizations(count=100) %}
+            {% for organization in organizations %}
+            <div class="span6" style="margin-bottom:20px;">
+                <div class="box">
+                {% snippet 'snippets/organization_evaluation_item.html', organization=organization, truncate=50, truncate_title=35 %}
+                </div>
+            </div>
+            {% endfor %}
+        {% endblock %}
+    </div>
+  </div>
+</div>

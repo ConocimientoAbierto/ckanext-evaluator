@@ -5,9 +5,30 @@
 {% block primary_content_inner %}
   <h1>{% block page_heading %}Evaluación del sitio: {{ c.group_dict.display_name }}{% endblock %}</h1>
 
-  <div class="well">
-    <h3 class="text-center text-info">Aquí estará la evaluación de los datasets y sitio</h3>
+  <div class="row well">
+    <div class="span6">
+      <h3 class="text-info">Puntaje Total</h3>
+    </div>
+    <div class="span2">
+      <h3 class="text-center">{{ reporte.total }}</h3>
+    </div>
   </div>
 
+  <div class="row well">
+      <div class="span6">
+        <h3 class="text-info">Datasets</h3>
+      </div>
+      <div class="span2">
+        <h3 class="text-center text-info">Puntaje</h3>
+      </div>
+  {% for dataset in reporte.report %}
+    <div class="span6">
+      <h4 >{{ dataset }}</h4>
+    </div>
+    <div class="span2">
+      <h4 class="text-center">{{ reporte.report[dataset] }}</h4>
+    </div>
+  {% endfor %}
+  </div>
 
 {% endblock %}

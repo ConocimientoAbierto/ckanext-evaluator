@@ -6,6 +6,7 @@ import ckan.plugins.toolkit as toolkit
 class EvaluatorPlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.IRoutes)
+    # plugins.implements(plugins.ITemplateHelpers)
 
     def update_config(self, config):
 
@@ -15,10 +16,10 @@ class EvaluatorPlugin(plugins.SingletonPlugin):
 
     def before_map(self, route_map):
         with routes.mapper.SubMapper(route_map,
-                controller='ckanext.evaluator.controller:EvaluatorController') as m:
-           m.connect('organization_evaluation', '/organization/evaluation/{id}', action='evaluation', ckan_icon='bar-chart')
+            controller='ckanext.evaluator.controller:EvaluatorController') as m:
+            m.connect('organization_evaluation', '/organization/evaluation/{id}', action='organization_evaluation_view', ckan_icon='bar-chart')
 
-           m.connect('dataset_evaluation', '/dataset/evaluation/{id}', action='dataset_evaluation_view', ckan_icon='bar-chart')
+            m.connect('dataset_evaluation', '/dataset/evaluation/{id}', action='dataset_evaluation_view', ckan_icon='bar-chart')
 
         return route_map
 

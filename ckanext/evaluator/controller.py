@@ -9,7 +9,18 @@ dt = datetime.datetime
 # class EvaluatorController(base.BaseController):
 class EvaluatorController(GroupController):
 
-    def evaluation(self, id):
+    def organization_evaluation_view(self, id):
+        ''' Render dataset evaluation view with the evaluation data
+
+        dataset_evaluation_view(id) -> render the view
+
+        render the view of evaluation result
+        '''
+
+        extra_vars = self.organization_evaluation(id)
+        return render('organization/evaluation.html', extra_vars=extra_vars)
+
+    def organization_evaluation(self, id):
 
         try:
             # Get data from DB
@@ -18,7 +29,8 @@ class EvaluatorController(GroupController):
                        'user': c.user or c.author,
                        'schema': self._db_to_form_schema(group_type=self.group_type),
                        'for_view': True, 'extras_as_string': True}
-            data_dict = {'id': id}
+            data_dict = {'id': id,
+                         'include_datasets': True}
 
             c.group_dict = self._action('organization_show')(context, data_dict)
             c.group = context['group']
@@ -28,7 +40,7 @@ class EvaluatorController(GroupController):
         except logic.NotAuthorized:
             abort(401, 'Esto es un 401 desde mi controller')
 
-        return render('organization/evaluation.html')
+        return {'reporte': self._organization_matadata_evaluation(c.group_dict['packages'])}
 
     def dataset_evaluation_view(self, id):
         ''' Render dataset evaluation view with the evaluation data
@@ -66,7 +78,6 @@ class EvaluatorController(GroupController):
             abort(401, 'Esto es un 401 desde mi controller')
 
         return {'reporte': self._matadata_evaluation(c.pkg_dict)}
-
 
     def _matadata_evaluation(self, pkg_dict):
 
@@ -123,7 +134,7 @@ class EvaluatorController(GroupController):
 
         # frecuencia de actualizacion declarada
         str_frec = 'frecuencia de actualizacion'.decode('utf-8')
-        if str_frec in pkg_dict['extras']:
+        if 'extras' in pkg_dict and str_frec in pkg_dict['extras']:
             frec_declarada = pkg_dict['extras']['str_frec']
             reporte['categorias']['frec_act_declarada']['puntaje'] = 0.5
             reporte['categorias']['frec_act_declarada']['motivo'] = 'Posee frecuencia de actualizacion informada pero la misma no es especifica.'
@@ -161,3 +172,33 @@ class EvaluatorController(GroupController):
             reporte['total'] = reporte['total'] + reporte['categorias'][item]['puntaje']
 
         return reporte
+
+    def _organization_matadata_evaluation(self, pkgs_dict):
+        ''' return a list of dicts with the report of all datasets belong to an organization
+
+        _organization_matadata_evaluation(pkgs_dict) -> [{dataset_name:int}, {dataset_name:int}]
+
+        Returns a report as a list of dictionaries with the resume of all datasets
+        on an organization
+        [
+            dataset_name: ponits,
+            dataset_name: ponits,
+                    :
+            dataset_name: ponits,
+        ]
+        '''
+        total = 0
+        organization_report = {}
+        for pkg in pkgs_dict:
+            reporte = self.dataset_evaluation(pkg['id'  ])
+            organization_report[pkg['title']] = reporte['reporte']['total']
+
+        for dataset in organization_report:
+            total = total + organization_report[dataset]
+
+        report = {
+            'total': total / len(organization_report),
+            'report': organization_report
+        }
+
+        return report

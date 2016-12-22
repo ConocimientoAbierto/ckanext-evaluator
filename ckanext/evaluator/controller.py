@@ -6,7 +6,6 @@ from ckan import model, logic
 dt = datetime.datetime
 
 
-# class EvaluatorController(base.BaseController):
 class EvaluatorController(GroupController):
 
     def organization_evaluation_view(self, id):
@@ -187,8 +186,19 @@ class EvaluatorController(GroupController):
             dataset_name: ponits,
         ]
         '''
+
         total = 0
         organization_report = {}
+        report = {
+            'total': 0,
+            'report': {}
+        }
+
+        # If the organization has no datasets return in 0
+        if len(pkgs_dict) == 0:
+            report['total'] = 0
+            return report
+
         for pkg in pkgs_dict:
             reporte = self.dataset_evaluation(pkg['id'])
             organization_report[pkg['title']] = {
@@ -200,7 +210,7 @@ class EvaluatorController(GroupController):
             total = total + organization_report[dataset]['points']
 
         report = {
-            'total': total / len(organization_report),
+            'total': "{0:.2f}".format(total / len(organization_report)),
             'report': organization_report
         }
 

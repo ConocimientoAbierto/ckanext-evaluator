@@ -1,12 +1,14 @@
 import routes.mapper
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
+from controller import EvaluatorController
 
+evalController = EvaluatorController()
 
 class EvaluatorPlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.IRoutes)
-    # plugins.implements(plugins.ITemplateHelpers)
+    plugins.implements(plugins.ITemplateHelpers)
 
     def update_config(self, config):
 
@@ -25,3 +27,9 @@ class EvaluatorPlugin(plugins.SingletonPlugin):
 
     def after_map(self, route_map):
         return route_map
+
+    def get_helpers(self):
+        ''' Register the get_total_points_organization function in EvaluatorController as a helper function.
+        '''
+
+        return {'evaluator_total_points_organization': evalController.organization_evaluation}

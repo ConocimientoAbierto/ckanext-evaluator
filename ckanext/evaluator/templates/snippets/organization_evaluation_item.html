@@ -21,9 +21,20 @@
               <p>{{ h.markdown_extract(organization.description, truncate)|urlize }}</p>
             {% endif %}
           {% endif %}
+          {% set report = h.evaluator_total_points_organization(organization.name) %}
+          <div class="span2">
+            <h4 class="text-info">
+                datasets: {{ organization.package_count }}
+            </h4>
+          </div>
+          <div class="span3">
+              <h4 class="text-success">
+                puntaje promedio: {{ report.reporte.total }}
+            </h4>
+          </div>
         {% endblock %}
       </header>
     {% endblock %}
-    
+
   </section>
 {% endblock %}

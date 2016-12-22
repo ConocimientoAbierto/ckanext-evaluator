@@ -190,11 +190,14 @@ class EvaluatorController(GroupController):
         total = 0
         organization_report = {}
         for pkg in pkgs_dict:
-            reporte = self.dataset_evaluation(pkg['id'  ])
-            organization_report[pkg['title']] = reporte['reporte']['total']
+            reporte = self.dataset_evaluation(pkg['id'])
+            organization_report[pkg['title']] = {
+                'id': pkg['name'],
+                'points': reporte['reporte']['total']
+            }
 
         for dataset in organization_report:
-            total = total + organization_report[dataset]
+            total = total + organization_report[dataset]['points']
 
         report = {
             'total': total / len(organization_report),

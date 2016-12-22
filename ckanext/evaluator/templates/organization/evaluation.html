@@ -23,10 +23,10 @@
       </div>
   {% for dataset in reporte.report %}
     <div class="span6">
-      <h4 >{{ dataset }}</h4>
+      <h4 >{{ h.link_to(dataset, h.url_for('dataset_evaluation', id=reporte.report[dataset].id)) }}</h4>
     </div>
     <div class="span2">
-      <h4 class="text-center">{{ reporte.report[dataset] }}</h4>
+      <h4 class="text-center">{{ reporte.report[dataset].points }}</h4>
     </div>
   {% endfor %}
   </div>

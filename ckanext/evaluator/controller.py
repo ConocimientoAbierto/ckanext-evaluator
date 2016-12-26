@@ -1,4 +1,5 @@
-import re, datetime
+import re
+import datetime
 from ckan.lib.base import render, c, abort
 from ckan.controllers.group import GroupController
 from ckan import model, logic
@@ -54,10 +55,10 @@ class EvaluatorController(GroupController):
     def dataset_evaluation(self, id):
         ''' Return a dictionary with the report of a dataset
 
-            dataset_evaluation(id) -> {report}
+        dataset_evaluation(id) -> {report}
 
-            Search for the information of a dataset through his id
-            and return a dictionary with the result of the evaluation
+        Search for the information of a dataset through his id
+        and return a dictionary with the result of the evaluation
         '''
 
         try:

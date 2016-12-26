@@ -5,13 +5,13 @@ from controller import EvaluatorController
 
 evalController = EvaluatorController()
 
+
 class EvaluatorPlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.IRoutes)
     plugins.implements(plugins.ITemplateHelpers)
 
     def update_config(self, config):
-
         toolkit.add_template_directory(config, 'templates')
         toolkit.add_public_directory(config, 'public')
         toolkit.add_resource('fanstatic', 'evaluator')

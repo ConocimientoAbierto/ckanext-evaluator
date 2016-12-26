@@ -31,5 +31,8 @@ class EvaluatorPlugin(plugins.SingletonPlugin):
     def get_helpers(self):
         ''' Register the get_total_points_organization function in EvaluatorController as a helper function.
         '''
+        from ckanext.evaluator import helpers as evaluator_helpers
 
-        return {'evaluator_total_points_organization': evalController.organization_evaluation}
+        return {
+                'evaluator_total_points_organization': evaluator_helpers.total_points_organization
+                }

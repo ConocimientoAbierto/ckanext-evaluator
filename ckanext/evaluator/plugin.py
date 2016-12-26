@@ -1,9 +1,6 @@
 import routes.mapper
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
-from controller import EvaluatorController
-
-evalController = EvaluatorController()
 
 
 class EvaluatorPlugin(plugins.SingletonPlugin):
@@ -18,7 +15,7 @@ class EvaluatorPlugin(plugins.SingletonPlugin):
 
     def before_map(self, route_map):
         with routes.mapper.SubMapper(route_map,
-            controller='ckanext.evaluator.controller:EvaluatorController') as m:
+            controller='ckanext.evaluator.controllers.view:ViewController') as m:
             m.connect('organization_evaluation', '/organization/evaluation/{id}', action='organization_evaluation_view', ckan_icon='bar-chart')
 
             m.connect('dataset_evaluation', '/dataset/evaluation/{id}', action='dataset_evaluation_view', ckan_icon='bar-chart')

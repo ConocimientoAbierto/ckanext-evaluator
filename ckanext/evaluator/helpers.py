@@ -1,4 +1,4 @@
-from controller import EvaluatorController
+from ckanext.evaluator.controllers.evaluator import EvaluatorController
 
 evalController = EvaluatorController()
 

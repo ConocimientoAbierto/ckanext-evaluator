@@ -1,6 +1,6 @@
 import re
 import datetime
-from ckan.lib.base import render, c, abort
+from ckan.lib.base import c, abort
 from ckan.controllers.group import GroupController
 from ckan import model, logic
 
@@ -8,17 +8,6 @@ dt = datetime.datetime
 
 
 class EvaluatorController(GroupController):
-
-    def organization_evaluation_view(self, id):
-        ''' Render dataset evaluation view with the evaluation data
-
-        dataset_evaluation_view(id) -> render the view
-
-        render the view of evaluation result
-        '''
-
-        extra_vars = self.organization_evaluation(id)
-        return render('organization/evaluation.html', extra_vars=extra_vars)
 
     def organization_evaluation(self, id):
 
@@ -41,16 +30,6 @@ class EvaluatorController(GroupController):
             abort(401, 'Esto es un 401 desde mi controller')
 
         return {'reporte': self._organization_matadata_evaluation(c.group_dict['packages'])}
-
-    def dataset_evaluation_view(self, id):
-        ''' Render dataset evaluation view with the evaluation data
-
-        dataset_evaluation_view(id) -> render the view
-
-        render the view of evaluation result
-        '''
-        extra_vars = self.dataset_evaluation(id)
-        return render('dataset/evaluation.html', extra_vars=extra_vars)
 
     def dataset_evaluation(self, id):
         ''' Return a dictionary with the report of a dataset

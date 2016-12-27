@@ -24,4 +24,4 @@ class ViewController(BaseController):
         render the view of evaluation result
         '''
         extra_vars = evalController.dataset_evaluation(id)
-        return render('dataset/evaluation.html', extra_vars=extra_vars)
+        return render('package/evaluation.html', extra_vars=extra_vars)

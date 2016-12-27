@@ -1,0 +1,52 @@
+{% extends "package/read_base.html" %}
+
+{% set categorias=reporte.categorias %}
+
+{% block subtitle %}{{ _('Evaluation') }} - {{ super() }}{% endblock %}
+
+{% block primary_content_inner %}
+  <h1>{% block page_heading %}Evaluación del sitio: {{ c.pkg_dict.display_name }}{% endblock %}</h1>
+
+  <div class="row well" data-module="evaluator_goodtables">
+    <div class="span6">
+      <h3 class="text-info">Evaluación de archivo (Good Tables)</h3>
+      <input id="dataset_url" type="hidden" value="{{ c.pkg_dict.resources[0].url }}" id="dataset_url" />
+    </div>
+    <div class="span2">
+      <h3 id="gt_status" class="text-right">evaluando...</h3>
+    </div>
+    <div id="resultsTable" class="span8">
+    </div>
+  </div>
+
+  <div class="row well">
+    <div class="span6">
+      <h3 class="text-info">Evaluación de metadatos</h3>
+    </div>
+    <div class="span2">
+      <h3 class="text-right">{{ reporte.total }}</h3>
+    </div>
+    <div class="span8">
+      <table class="table table-hover table-condensed">
+        <thead>
+          <tr>
+            <th>Categoría</th>
+            <th>Descripción</th>
+            <th>Puntaje</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in categorias %}
+            <tr>
+              <td>{{ categorias[row].descripcion }}</td>
+              <td>{{ categorias[row].motivo }}</td>
+              <td>{{ categorias[row].puntaje }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  {% resource 'evaluator/evaluator.js' %}
+{% endblock %}

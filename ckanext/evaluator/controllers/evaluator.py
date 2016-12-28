@@ -153,18 +153,21 @@ class EvaluatorController(GroupController):
         return reporte
 
     def _organization_matadata_evaluation(self, pkgs_dict):
-        ''' return a list of dicts with the report of all datasets belong to an organization
+        ''' return a dicts with the report of all datasets belong to an organization
 
         _organization_matadata_evaluation(pkgs_dict) -> [{dataset_name:int}, {dataset_name:int}]
 
-        Returns a report as a list of dictionaries with the resume of all datasets
-        on an organization
-        [
-            dataset_name: ponits,
-            dataset_name: ponits,
-                    :
-            dataset_name: ponits,
-        ]
+        Returns a report as a dictionaries with the resume of all datasets
+        on a organization
+        {
+            total = 0,
+            report = {
+                dataset_name: ponits,
+                dataset_name: ponits,
+                        :
+                dataset_name: ponits,
+            }
+        }
         '''
 
         total = 0
@@ -190,7 +193,7 @@ class EvaluatorController(GroupController):
             total = total + organization_report[dataset]['points']
 
         report = {
-            'total': "{0:.2f}".format(total / len(organization_report)),
+            'total': round(total / float(len(organization_report)), 2),
             'report': organization_report
         }
 

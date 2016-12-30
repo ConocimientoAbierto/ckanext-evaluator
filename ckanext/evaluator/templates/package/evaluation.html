@@ -47,7 +47,6 @@
       </table>
     </div>
   </div>
-  {% set eval = h.evaluator_get_dataset_evaluation(c.pkg_dict.name) %}
-  {{ eval }}
+
   {% resource 'evaluator/evaluator.js' %}
 {% endblock %}

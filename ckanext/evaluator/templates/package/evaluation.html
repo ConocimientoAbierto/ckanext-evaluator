@@ -5,7 +5,7 @@
 {% block subtitle %}{{ _('Evaluation') }} - {{ super() }}{% endblock %}
 
 {% block primary_content_inner %}
-  <h1>{% block page_heading %}Evaluación del sitio: {{ c.pkg_dict.display_name }}{% endblock %}</h1>
+  <h1>{% block page_heading %}Evaluación del sitio: {{ c.pkg_dict.name }}{% endblock %}</h1>
 
   <div class="row well" data-module="evaluator_goodtables">
     <div class="span6">
@@ -47,6 +47,7 @@
       </table>
     </div>
   </div>
-
+  {% set eval = h.evaluator_get_dataset_evaluation(c.pkg_dict.name) %}
+  {{ eval }}
   {% resource 'evaluator/evaluator.js' %}
 {% endblock %}

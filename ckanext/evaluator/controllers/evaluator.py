@@ -1,8 +1,10 @@
+# coding: utf-8
 import re
 import datetime
 from ckan.lib.base import c, abort
 from ckan.controllers.group import GroupController
 from ckan import model, logic
+import ckan.plugins.toolkit as tk
 
 dt = datetime.datetime
 
@@ -198,3 +200,116 @@ class EvaluatorController(GroupController):
         }
 
         return report
+
+    def get_ranking(self):
+        '''
+        TODO momentaneamente solo devuelve los datos de las organizaciones
+        '''
+        # obtiene las organizaciones y sus datos
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'for_view': True,
+                   'with_private': False}
+
+        data_dict_global_results = {
+            'all_fields': True
+        }
+        organizations_dict = self._action('organization_list')(context,
+                                                    data_dict_global_results)
+
+        # construye el dict con los datos de las organizaciones
+        hoy = dt.now().strftime("%d-%m-%Y")
+        ranking = {
+            'ultima_actualizacion': hoy,
+            'portales': []
+        }
+        i = 1
+        for org in organizations_dict:
+            eval_url = tk.url_for('organization_evaluation', id=org['name'])
+            ranking['portales'].append({
+                'posicion_actual': i,
+                'posicion_anterior': i + 1,
+                'direccion_del_cambio': 'up',
+                'nombre_portal': org['display_name'],
+                'calidad': 50,
+                'cantidad_de_datasets': org['package_count'],
+                'url_evaluacion': eval_url,
+                'evaluado': True
+            })
+            i = i + 1
+
+        return ranking
+
+    # TODO cambiar el nombre
+    def helper_organization_evaluation(self, id):
+        '''
+        TODO Por ahora devuelve un dict con la información de la evaluación de la organización
+        '''
+        # Get data from DB
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author,
+                   'schema': self._db_to_form_schema(group_type='organization'),
+                   'for_view': True, 'extras_as_string': True}
+        data_dict = {'id': id,
+                     'include_datasets': True}
+
+        org_dict = self._action('organization_show')(context, data_dict)
+
+        hoy = dt.now().strftime("%d-%m-%Y")
+        org_eval = {
+            'nombre_portal': org_dict['display_name'],
+            'url_portal': 'esta/es/la/url/de/un/portal',
+            'cantidad_de_datasets': org_dict['package_count'],
+            'calidad': 50,
+            'posicion': 2,
+            'utlima_actualizacion': hoy,
+            'criterios': {
+                'explicacion': 100,
+                'actualizacion': 40,
+                'responsable': 80,
+                'formato': 100,
+                'licencia': 0,
+                'validez': 0
+            }
+        }
+
+        return org_eval
+
+    # TODO cambiar nombre
+    def helper_dataset_evaluation(self, id):
+        '''
+        TODO Por ahora devuelve un dict con la información de la evaluación de un dataset
+        '''
+        # Get data from DB
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author,
+                   'for_view': True, 'extras_as_string': True,
+                   'auth_user_obj': c.userobj}
+        data_dict = {'id': id}
+
+        pkg_dict = logic.get_action('package_show')(context, data_dict)
+
+        dataset_eval = {
+            'nombre': pkg_dict['name'],
+            'url_original': 'esta/es/la/url/de/un/dataset',
+            'explicacion': True,
+            'fecha_de_actualizcion': True,
+            'cumple_actualizacion': False,
+            'responsable': True,
+            'licencia': False,
+            'recursos': []
+        }
+
+        for res in pkg_dict['resources']:
+            gt_url = 'http://goodtables.okfnlabs.org/api/run?data_url=' + res['url']
+            dataset_eval['recursos'].append({
+                'id': res['id'],
+                'nombre': res['name'],
+                'formato': True,
+                'formato': True,
+                'validez': True,
+                'evaluado_validez': True,
+                'cantidad de errores': 912,
+                'url goodtables': gt_url
+            })
+
+        return dataset_eval

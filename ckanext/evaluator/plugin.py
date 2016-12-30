@@ -31,5 +31,8 @@ class EvaluatorPlugin(plugins.SingletonPlugin):
         from ckanext.evaluator import helpers as evaluator_helpers
 
         return {
-                'evaluator_total_points_organization': evaluator_helpers.total_points_organization
-                }
+            'evaluator_total_points_organization': evaluator_helpers.total_points_organization,
+            'evaluator_get_organization_ranking': evaluator_helpers.get_organization_ranking,
+            'evaluator_get_organization_evaluation': evaluator_helpers.get_organization_evaluation,
+            'evaluator_get_dataset_evaluation': evaluator_helpers.get_dataset_evaluation
+        }
